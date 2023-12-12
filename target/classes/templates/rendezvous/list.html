@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rendezvous</title>
+</head>
+<body>
+<div th:if="${not #lists.isEmpty(rendezvous)}">
+    <table>
+        <tr>
+            <th>Id_Rendezvous</th>
+            <th>Date_rdv</th>
+            <th>Date_demande</th>
+            <th>Salon</th>
+            <th>Client</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="rendezvous : ${rendezvous}">
+            <td th:text="${rendezvous.idrendezvous}"></td>
+            <td th:text="${rendezvous.Date_rdv}"></td>
+            <td th:text="${rendezvous.Date_demande}"></td>
+            <td th:text="${rendezvous.salon.nom}"></td>
+            <td th:text="${rendezvous.client.nom}"></td>
+            <td>
+                <a th:href="@{/rendezvous/edit/{id}(id=${rendezvous.idrendezvous})}">Edit</a>
+                <a th:href="@{/rendezvous/delete/{id}(id=${rendezvous.idrendezvous})}">Delete</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div th:if="${#lists.isEmpty(rendezvous)}">
+    <p>No rendezvous found</p>
+</div>
+<a th:href="@{/rendezvous/add}">Add New Rendezvous</a>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Clients</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.js"></script>
+</head>
+<body>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Telephone</th>
+                <th>Date naissance</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="client : ${clients}">
+                <td th:text="${client.id_Client}"></td>
+                <td th:text="${client.nom}"></td>
+                <td th:text="${client.prenom}"></td>
+                <td th:text="${client.telephone}"></td>
+                <td th:text="${client.datenaissance}"></td>
+                <td>
+                    <a th:href="@{/clients/{id}(id=${client.id_Client})}" th:text="Edit"></a>
+                    <button class="btn-delete" th:attr="data-id=${client.id_Client}">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <form id="form-client" method="post" th:action="@{/clients}" th:object="${client}">
+        <input type="hidden" th:field="*{id_Client}"/>
+        <label for="nom">Nom:</label>
+        <input type="text" id="nom" name="nom" th:field="*{nom}"/>
+        <br>
+        <label for="prenom">Prenom:</label>
+        <input type="text" id="prenom" name="prenom" th:field="*{prenom}"/>
+        <br>
+        <label for="telephone">Telephone:</label>
+        <input type="text" id="telephone" name="telephone" th:field="*{telephone}"/>
+        <br>
+        <label for="datenaissance">Date naissance:</label>
+        <input type="text" id="datenaissance" name="datenaissance" th:field="*{datenaissance}"/>
+        <br>
+        <input type="submit" value="Save"/>
+    </form>
+</div>
+<script>
+    $(document).ready(function() {
+        // Delete button click
+        $('.btn-delete').on('click', function() {
+        	var clientId = $(this).data('id');
+        	if (confirm("Are you sure you want to delete this client?")) {
+        	$.ajax({
+        	type: "DELETE",
+        	url: '/clients/' + clientId,
+        	success: function() {
+        	location.reload();
+        	},
+        	error: function() {
+        	alert("Failed to delete client. Please try again later.");
+        	}
+        	});
+        	}
+        	});
+        // Form validation
+        $('#form-client').validate({
+            rules: {
+                nom: {
+                    required: true,
+                },
+                prenom: {
+                    required: true,
+                },
+                telephone: {
+                    required: true,
+                },
+                datenaissance: {
+                    required: true,
+                }
+            },
+            messages: {
+                nom: {
+                    required: "Please enter the client's name",
+                },
+                prenom: {
+                    required: "Please enter the client's lastname",
+                },
+                telephone: {
+                    required: "Please enter the client's telephone",
+                },
+                datenaissance: {
+                    required: "Please enter the client's birthdate",
+                }
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+    });
+    </script>
+    </body>
+    </html>
