@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rendezvous Form</title>
+</head>
+<body>
+<h1>Rendezvous Form</h1>
+<form action="#" th:action="@{/rendezvous}" th:object="${rendezvous}" method="post">
+    <input type="hidden" th:field="*{idrendezvous}" />
+    <label for="Date_rdv">Date Rendezvous:</label>
+    <input type="date" id="Date_rdv" th:field="*{Date_rdv}"/>
+    <br>
+    <label for="Date_demande">Date Demande:</label>
+    <input type="date" id="Date_demande" th:field="*{Date_demande}"/>
+    <br>
+   
+
+    <br>
+    <input type="submit" value="Save"/>
+</form>
+</body>
+</html>
